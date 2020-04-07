@@ -1,5 +1,4 @@
 const BoardCreate = newBorderData => {
-  console.log('newBorderData', newBorderData);
   const { title, columns } = newBorderData;
   const titleColumns = columns[0].title;
   const { order } = columns[0];

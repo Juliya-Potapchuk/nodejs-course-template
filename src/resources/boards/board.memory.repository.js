@@ -12,7 +12,6 @@ const getBoard = async id => {
 const createBoard = async newBoardData => {
   const newBoard = new Board(newBoardData);
   boardsData.push(newBoard);
-  console.log('boardsData', boardsData[4]);
   return newBoard;
 };
 

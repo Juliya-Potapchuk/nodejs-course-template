@@ -51,8 +51,7 @@ router.route('/:id').delete(async (req, res) => {
   if (!boardsData) {
     return res.status(404).send('Board not found');
   }
-
-  return res.status(200).json(boardsData);
+  return res.status(200).json(boardId);
 });
 
 module.exports = router;

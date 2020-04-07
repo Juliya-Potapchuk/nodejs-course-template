@@ -17,7 +17,7 @@ class Board {
 
   static toResponse(board) {
     const { id, title, columns } = board;
-    delete columns[0].id;
+    columns.map(column => delete column.id);
     return { id, title, columns };
   }
 }
