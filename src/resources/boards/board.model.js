@@ -9,10 +9,10 @@ class Column {
 }
 
 class Board {
-  constructor({ id = uuid(), title = 'BOARD', columns = '0' } = {}) {
+  constructor({ id = uuid(), title = 'BOARD', columns = [new Column()] } = {}) {
     this.id = id;
     this.title = title;
-    this.columns = [new Column(columns[0])];
+    this.columns = columns;
   }
 
   static toResponse(board) {
