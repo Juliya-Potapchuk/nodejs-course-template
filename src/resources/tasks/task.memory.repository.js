@@ -35,26 +35,23 @@ const updateTask = async (boardId, taskId, newTaskData) => {
   const { title, order, description, columnId, userId } = newTaskData;
 
   const index = tasksData.findIndex(task => {
-    return (
-      task.boardId === boardId &&
-      task.id === taskId &&
-      task.columnId === columnId &&
-      task.userId === userId
-    );
+    return task.boardId === boardId;
   });
 
   if (index === -1) {
     return false;
   }
+
   tasksData[index] = {
-    id: taskId,
-    title,
-    order,
-    description,
-    userId,
     boardId,
-    columnId
+    columnId,
+    description,
+    id: taskId,
+    order,
+    title,
+    userId
   };
+
   return tasksData[index];
 };
 
