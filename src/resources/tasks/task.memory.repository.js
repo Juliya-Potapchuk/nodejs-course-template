@@ -1,7 +1,4 @@
 let tasksData = require('../../data/task.json');
-
-const boardData = require('../../data/board.json');
-const userData = require('../../data/user.json');
 const Task = require('./task.model');
 
 const getTasksByBoardID = async boardId => {
@@ -12,6 +9,7 @@ const getTasksByBoardID = async boardId => {
       arrTasks.push(task);
     }
   });
+
   return arrTasks;
 };
 
@@ -27,19 +25,10 @@ const getTasksByBoardAndTaskID = async (boardId, taskId) => {
 };
 
 const createTask = async (boardId, newTaskData) => {
-  const { userId, columnId } = newTaskData;
-  const existBoard = boardData.some(boardObj => boardObj.id === boardId);
-  const existUser = userData.some(userObj => userObj.id === userId);
-  const existColumn = boardData.some(boardObj => {
-    return boardObj.columns[0].id === columnId;
-  });
-  if (existBoard && existColumn && existUser) {
-    const newTask = new Task(newTaskData);
-    newTask.boardId = boardId;
-    tasksData.push(newTask);
-    return newTask;
-  }
-  return false;
+  const newTask = new Task(newTaskData);
+  newTask.boardId = boardId;
+  tasksData.push(newTask);
+  return newTask;
 };
 
 const updateTask = async (boardId, taskId, newTaskData) => {

@@ -1,7 +1,6 @@
 const router = require('express').Router({ mergeParams: true });
 const Task = require('./task.model');
 const tasksService = require('./task.service');
-const validator = require('./validator');
 
 router.route('/').get(async (req, res) => {
   const boardId = req.params.boardId;
@@ -10,7 +9,7 @@ router.route('/').get(async (req, res) => {
   if (tasksArr.length === 0) {
     return res.status(401).send('Access token is missing or invalid');
   }
-  res.status(200).json(tasksArr.map(Task.toResponse));
+  return res.status(200).json(tasksArr);
 });
 
 router.route('/:id').get(async (req, res) => {
@@ -27,15 +26,7 @@ router.route('/:id').get(async (req, res) => {
 router.route('/').post(async (req, res) => {
   const boardId = req.params.boardId;
   const newTaskData = await req.body;
-  const isValid = validator.TaskCreate(newTaskData);
-
-  if (!isValid) {
-    return res.status(400).send('Bad request');
-  }
   const newTask = await tasksService.createTask(boardId, newTaskData);
-  if (!newTask) {
-    return res.status(400).send('Bad request');
-  }
 
   res.status(200).json(Task.toResponse(newTask));
 });
