@@ -42,4 +42,4 @@ const middlewareError = (err, req, res, next) => {
   next();
 };
 
-module.exports = { middlewareInfo, middlewareError };
+module.exports = { middlewareInfo, middlewareError, logger };

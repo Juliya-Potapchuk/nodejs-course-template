@@ -9,12 +9,12 @@ const { logger } = require('./common/logger.js');
 // Promise.reject(Error('Oops!'));
 
 process.on('uncaughtException', (err, origin) => {
-  logger.error('error', { message: err.message, error: origin });
+  logger.log('error', { message: err.message, error: origin });
   console.log(` Error: ${origin}. Message: ${err.message}`);
 });
 
 process.on('unhandledRejection', reason => {
-  logger.error('error', {
+  logger.log('error', {
     message: reason.message,
     error: 'unhandledRejection'
   });
