@@ -38,8 +38,7 @@ const deleteBoard = async boardId => {
   listener.boardDeleteListener(boardId); // delete tasks connected with this board
 
   await boardsData.splice(index, 1);
-  // return true;
-  return boardsData;
+  return true;
 };
 
 module.exports = { getAll, getBoard, createBoard, updateBoard, deleteBoard };

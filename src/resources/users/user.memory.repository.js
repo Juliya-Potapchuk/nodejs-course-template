@@ -35,7 +35,7 @@ const deleteUser = async id => {
     return false;
   }
 
-  listener.userDeleteListener(id); // update tasks connected with this user
+  await listener.userDeleteListener(id); // update tasks connected with this user
 
   await usersData.splice(index, 1);
   return true;

@@ -62,18 +62,19 @@ const deleteTask = async (boardId, taskId) => {
   if (index === -1) {
     return false;
   }
+  const delTask = tasksData[index];
   await tasksData.splice(index, 1);
-  return true;
+  return delTask;
 };
 
-const boardDeleteListener = async boardId => {
+const boardDeleteListener = boardId => {
   tasksData = tasksData.filter(taskObj => {
     return taskObj.boardId !== boardId;
   });
 };
 
 const userDeleteListener = async userId => {
-  tasksData.map(taskObj => {
+  await tasksData.map(taskObj => {
     if (taskObj.userId === userId) {
       taskObj.userId = null;
     }
