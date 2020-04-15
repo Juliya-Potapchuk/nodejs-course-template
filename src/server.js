@@ -1,25 +1,21 @@
 const { PORT } = require('./common/config');
 const app = require('./app');
-const { logger } = require('./common/logger.js');
+const exit = process.exit;
 
-// setTimeout(() => {
-//   throw new Error('Oops!');
-// }, 1500);
-
-// Promise.reject(Error('Oops!'));
-
-process.on('uncaughtException', (err, origin) => {
-  logger.log('error', { message: err.message, error: origin });
-  console.log(` Error: ${origin}. Message: ${err.message}`);
-});
-
-process.on('unhandledRejection', reason => {
-  logger.log('error', {
-    message: reason.message,
-    error: 'unhandledRejection'
+process
+  .on('uncaughtException', (err, origin) => {
+    console.log(` Error: ${origin}. Message: ${err.message}`);
+    exit(1);
+  })
+  .on('unhandledRejection', async reason => {
+    console.log(` Error: UnhandledRejection. Message: ${reason.message}`);
+    exit(1);
   });
-  console.log(` Error: UnhandledRejection. Message: ${reason.message}`);
-});
+// for check 'uncaughtException'
+// throw Error('Error uncaughtException');
+
+// for check 'unhandledRejection'
+// Promise.reject(Error('Error unhandledRejection'));
 
 app.listen(PORT, () =>
   console.log(`App is running on http://localhost:${PORT}`)

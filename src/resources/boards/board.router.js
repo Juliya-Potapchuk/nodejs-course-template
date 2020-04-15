@@ -3,59 +3,51 @@ const boardsService = require('./board.service');
 const validator = require('./validator');
 const Board = require('./board.model');
 const createError = require('http-errors');
+const { catchError } = require('../../common/catchError');
 
-router.route('/').get(async (req, res, next) => {
-  const boards = await boardsService.getAll();
-  if (boards.length === 0) {
-    const err = createError(401);
-    return next(err);
-  }
-  res.status(200).json(boards);
-});
+router.route('/').get(
+  catchError(async (req, res) => {
+    const boards = await boardsService.getAll();
+    res.status(200).json(boards);
+  })
+);
 
-router.route('/:id').get(async (req, res, next) => {
-  const id = await req.params.id;
-  const board = await boardsService.getBoard(id);
+router.route('/:id').get(
+  catchError(async (req, res, next) => {
+    const id = req.params.id;
+    const board = await boardsService.getBoard(id);
+    if (!board) return next(createError(404, 'Not Found'));
+    return res.status(200).json(board);
+  })
+);
 
-  if (!board) {
-    const err = createError(404);
-    return next(err);
-  }
-  res.status(200).json(board);
-});
+router.route('/').post(
+  catchError(async (req, res, next) => {
+    const newBorderData = req.body;
+    const isValid = validator.BoardCreate(newBorderData);
+    if (!isValid) return next(createError(404, 'Not Found'));
+    const newBoard = await boardsService.createBoard(newBorderData);
+    return res.status(200).json(Board.toResponse(newBoard));
+  })
+);
 
-router.route('/').post(async (req, res, next) => {
-  const newBorderData = await req.body;
-  const isValid = validator.BoardCreate(newBorderData);
+router.route('/:id').put(
+  catchError(async (req, res, next) => {
+    const id = req.params.id;
+    const newPropOfBoard = req.body;
+    const board = await boardsService.updateBoard(id, newPropOfBoard);
+    if (!board) return next(createError(404, 'Not Found'));
+    return res.status(200).json(board);
+  })
+);
 
-  if (!isValid) {
-    const err = createError(400);
-    return next(err);
-  }
-  const newBoard = await boardsService.createBoard(newBorderData);
-  res.status(200).json(Board.toResponse(newBoard));
-});
-
-router.route('/:id').put(async (req, res, next) => {
-  const id = await req.params.id;
-  const newPropOfBoard = await req.body;
-  const board = await boardsService.updateBoard(id, newPropOfBoard);
-  if (!board) {
-    const err = createError(400);
-    return next(err);
-  }
-  res.status(200).json(board);
-});
-
-router.route('/:id').delete(async (req, res, next) => {
-  const boardId = await req.params.id;
-  const boardsData = await boardsService.deleteBoard(boardId);
-
-  if (!boardsData) {
-    const err = createError(404);
-    return next(err);
-  }
-  res.status(200).json(boardId);
-});
+router.route('/:id').delete(
+  catchError(async (req, res, next) => {
+    const boardId = req.params.id;
+    const boardsData = await boardsService.deleteBoard(boardId);
+    if (!boardsData) return next(createError(404, 'Not Found'));
+    return res.status(204).json('The board has been deleted');
+  })
+);
 
 module.exports = router;

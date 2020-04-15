@@ -1,3 +1,10 @@
-{"message":"Oops!","error":"unhandledRejection","level":"error","timestamp":"2020-04-12T20:43:37.639Z"}
-{"message":"Oops!","error":"unhandledRejection","level":"error","timestamp":"2020-04-12T20:43:44.035Z"}
-{"message":"Oops!","error":"uncaughtException","level":"error","timestamp":"2020-04-12T20:43:45.515Z"}
+{"level":"error","message":" Not Found, CODE: 404","timestamp":"2020-04-15 22:04:46"}
+{"level":"error","message":" Not Found, CODE: 404","timestamp":"2020-04-15 22:04:25"}
+{"level":"error","message":" Internal Server Error, CODE: 500","timestamp":"2020-04-15 22:04:24"}
+{"level":"error","message":"Not Found, CODE: 404","timestamp":"2020-04-15 22:04:75"}
+{"level":"error","message":"Not Found, CODE: 404","timestamp":"2020-04-15 22:04:78"}
+{"level":"error","message":"Not Found, CODE: 404","timestamp":"2020-04-15 22:04:85"}
+{"level":"error","message":"Not Found, CODE: 404","timestamp":"2020-04-15 22:04:85"}
+{"level":"error","message":"Not Found, CODE: 404","timestamp":"2020-04-15 22:04:86"}
+{"level":"error","message":"Not Found, CODE: 404","timestamp":"2020-04-15 22:04:87"}
+{"level":"error","message":"Not Found, CODE: 404","timestamp":"2020-04-15 22:04:87"}
