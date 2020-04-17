@@ -5,6 +5,9 @@ const logger = createLogger({
   level: 'silly',
   format: format.combine(format.timestamp({ format: 'YYYY-MM-DD HH:MM:SS' })),
   transports: [
+    new transports.Console({
+      format: format.combine(format.colorize(), format.cli())
+    }),
     new transports.File({
       filename: path.join(__dirname, '/log/error.log'),
       level: 'error',

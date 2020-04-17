@@ -3,7 +3,6 @@ const HttpStatus = require('http-status-codes');
 const errorHandler = (err, req, res, next) => {
   if (err) {
     err.statusCode = err.statusCode || 500;
-    err.message = err.message || 'Internal Server Error';
 
     if (err.statusCode !== 500) {
       res.status(HttpStatus.NOT_FOUND).send({

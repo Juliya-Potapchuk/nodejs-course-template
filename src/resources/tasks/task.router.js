@@ -1,13 +1,14 @@
 const router = require('express').Router({ mergeParams: true });
 const tasksService = require('./task.service');
 const createError = require('http-errors');
-const { catchError } = require('../../common/catchError');
+const { catchError } = require('../../common/errors/catchError');
+const Task = require('./task.model');
 
 router.route('/').get(
   catchError(async (req, res) => {
     const boardId = req.params.boardId;
-    const tasksArr = await tasksService.getTasksByBoardID(boardId);
-    return res.status(200).json(tasksArr);
+    const tasks = await tasksService.getTasksByBoardID(boardId);
+    return res.status(200).json(tasks.map(Task.toResponse));
   })
 );
 
@@ -17,7 +18,7 @@ router.route('/:id').get(
     const taskId = req.params.id;
     const task = await tasksService.getTasksByBoardAndTaskID(boardId, taskId);
     if (!task) return next(createError(404, 'Not Found'));
-    return res.status(200).json(task);
+    return res.status(200).json(Task.toResponse(task));
   })
 );
 
@@ -25,8 +26,8 @@ router.route('/').post(
   catchError(async (req, res) => {
     const boardId = req.params.boardId;
     const newTaskData = req.body;
-    const newTask = await tasksService.createTask(boardId, newTaskData);
-    return res.status(200).json(newTask);
+    const newTask = await tasksService.createTask({ ...newTaskData, boardId });
+    return res.status(200).json(Task.toResponse(newTask));
   })
 );
 
@@ -35,9 +36,13 @@ router.route('/:id').put(
     const boardId = req.params.boardId;
     const taskId = req.params.id;
     const newTaskData = req.body;
-    const task = await tasksService.updateTask(boardId, taskId, newTaskData);
+    const task = await tasksService.updateTask({
+      ...newTaskData,
+      boardId,
+      taskId
+    });
     if (!task) return next(createError(404, 'Not Found'));
-    return res.status(200).json(task);
+    return res.status(200).json(Task.toResponse(task));
   })
 );
 

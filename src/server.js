@@ -1,6 +1,13 @@
 const { PORT } = require('./common/config');
 const app = require('./app');
+const { connectToDB } = require('./db/data.base');
 const exit = process.exit;
+
+connectToDB(() => {
+  app.listen(PORT, () =>
+    console.log(`App is running on http://localhost:${PORT}`)
+  );
+});
 
 process
   .on('uncaughtException', (err, origin) => {
@@ -16,7 +23,3 @@ process
 
 // for check 'unhandledRejection'
 // Promise.reject(Error('Error unhandledRejection'));
-
-app.listen(PORT, () =>
-  console.log(`App is running on http://localhost:${PORT}`)
-);
