@@ -3,12 +3,12 @@ const boardsService = require('./board.service');
 const validator = require('./validator');
 const Board = require('./board.model');
 const createError = require('http-errors');
-const { catchError } = require('../../common/catchError');
+const { catchError } = require('../../common/errors/catchError');
 
 router.route('/').get(
   catchError(async (req, res) => {
     const boards = await boardsService.getAll();
-    res.status(200).json(boards);
+    res.status(200).json(boards.map(Board.toResponse));
   })
 );
 
@@ -17,7 +17,7 @@ router.route('/:id').get(
     const id = req.params.id;
     const board = await boardsService.getBoard(id);
     if (!board) return next(createError(404, 'Not Found'));
-    return res.status(200).json(board);
+    return res.status(200).json(Board.toResponse(board));
   })
 );
 
@@ -35,9 +35,9 @@ router.route('/:id').put(
   catchError(async (req, res, next) => {
     const id = req.params.id;
     const newPropOfBoard = req.body;
-    const board = await boardsService.updateBoard(id, newPropOfBoard);
+    const board = await boardsService.updateBoard({ ...newPropOfBoard, id });
     if (!board) return next(createError(404, 'Not Found'));
-    return res.status(200).json(board);
+    return res.status(200).json(Board.toResponse(board));
   })
 );
 
