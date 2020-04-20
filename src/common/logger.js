@@ -1,22 +1,30 @@
 const { createLogger, format, transports } = require('winston');
+const { combine, prettyPrint } = format;
 const path = require('path');
 
 const logger = createLogger({
   level: 'silly',
-  format: format.combine(format.timestamp({ format: 'YYYY-MM-DD HH:MM:SS' })),
   transports: [
     new transports.Console({
-      format: format.combine(format.colorize(), format.cli())
+      format: combine(format.colorize(), format.cli())
     }),
     new transports.File({
       filename: path.join(__dirname, '/log/error.log'),
       level: 'error',
-      format: format.combine(format.json(), format.colorize())
+      format: combine(
+        format.timestamp({ format: 'YYYY-MM-DD HH:MM:SS' }),
+        format.uncolorize(),
+        prettyPrint()
+      )
     }),
     new transports.File({
       filename: path.join(__dirname, '/log/info.log'),
       level: 'info',
-      format: format.combine(format.json(), format.colorize())
+      format: combine(
+        format.timestamp({ format: 'YYYY-MM-DD HH:MM:SS' }),
+        format.uncolorize(),
+        prettyPrint()
+      )
     })
   ]
 });
