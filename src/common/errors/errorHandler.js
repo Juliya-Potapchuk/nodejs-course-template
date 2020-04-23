@@ -5,8 +5,8 @@ const errorHandler = (err, req, res, next) => {
     err.statusCode = err.statusCode || 500;
 
     if (err.statusCode !== 500) {
-      res.status(HttpStatus.NOT_FOUND).send({
-        error: HttpStatus.getStatusText(HttpStatus.NOT_FOUND)
+      res.status(err.statusCode).send({
+        error: err.message
       });
       return next(err);
     }
