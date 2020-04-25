@@ -20,5 +20,4 @@ userSchema.statics.toResponse = user => {
 };
 
 const User = mongoose.model('User', userSchema);
-
 module.exports = User;
